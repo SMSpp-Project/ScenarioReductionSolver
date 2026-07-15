@@ -12,3 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - initial module skeleton generated from ModuleTemplate
+- `ScenarioReductionSolver`, heuristic scenario reduction (Baseline, Dupacova,
+  BestFit, FirstFit)
+- `CSSCScenarioReductionSolver`, scenario reduction via Consistent Scenario
+  Subset Clustering

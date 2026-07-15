@@ -1,8 +1,9 @@
 ##############################################################################
-################################ makefile-s ##################################
+################################# makefile-s #################################
 ##############################################################################
 #                                                                            #
-#   makefile of ScenarioReductionSolver and its dependencies, excluding SMS++#
+#   makefile of ScenarioReductionSolver and its dependencies, excluding      #
+#   the core SMS++ one                                                       #
 #                                                                            #
 #   The makefile defines internally all external libraries required by       #
 #   ScenarioReductionSolver, excluding the SMS++ core ones whose symbols are #
@@ -15,17 +16,16 @@
 #           $(SW)        = compiler options                                  #
 #           $(SMS++INC)  = the -I$( core SMS++ directory )                   #
 #           $(SMS++OBJ)  = the core SMS++ library                            #
-#           $(SRSkSDR)  = the directory where ScenarioReductionSolver source is       #
-#        $(SRSkODR)  = the directory where the objects have to be put        #
+#           $(SRSkSDR)   = the directory where the source is                 #
 #                                                                            #
-#   Output: $(SRSkOBJ)  = the final object(s) / library                      #
-#              $(SRSkLIB)  = external libraries + -L< libdirs >              #
-#     $(SRSkH)    = the .h files to include for ScenarioReductionSolver      #
-#         $(SRSkINC)  = the -I$( ScenarioReductionSolver directory )         #
+#   Output: $(SRSkOBJ)   = the final object(s) / library                     #
+#           $(SRSkLIB)   = external libraries + -L< libdirs >                #
+#           $(SRSkH)     = the .h files to include                           #
+#           $(SRSkINC)   = the -I$( source directory )                       #
 #                                                                            #
 #                             Antonio Frangioni                              #
-#                         Dipartimento di Informatica                        #
-#                             Universita' di Pisa                            #
+#                        Dipartimento di Informatica                         #
+#                            Universita' di Pisa                             #
 #                                                                            #
 ##############################################################################
 
@@ -37,6 +37,11 @@
 # *H   is the list of all include files
 # *INC is the -I< include directories >
 
+# define input macros for the TwoStageStochasticBlock makefile-s
+# (comprised StochasticBlock but not core SMS++), then include it
+TSSBkSDR = $(SRSkSDR)/../TwoStageStochasticBlock
+include $(TSSBkSDR)/makefile-s
+
 # include the makefile requiring all external modules in input
 include $(SRSkSDR)/makefile
 
@@ -44,10 +49,11 @@ include $(SRSkSDR)/makefile
 
 # append external -I directives to SRSkINC, SRSkOBJ and SRSkH as defined
 # by the makefile, thus the := assignment has to be used (use GNU make)
-SRSkOBJ := $(SRSkOBJ)
-SRSkINC := $(SRSkINC)
+SRSkOBJ := $(SRSkOBJ) $(TSSBkOBJ)
+SRSkH := $(SRSkH) $(TSSBkH)
+SRSkINC := $(TSSBkINC) $(SRSkINC)
 
 # external libraries for ScenarioReductionSolver
-SRSkLIB =
+SRSkLIB = $(TSSBkLIB)
 
-############################ End of makefile #################################
+########################### End of makefile-s ################################

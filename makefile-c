@@ -1,27 +1,26 @@
 ##############################################################################
-################################ makefile-c ##################################
+################################# makefile-c #################################
 ##############################################################################
 #                                                                            #
 #   complete makefile of ScenarioReductionSolver                             #
 #                                                                            #
 #   The makefile defines internally all external libraries (comprised the    #
-#   SMS++ one) required by ScenarioReductionSolver. Accordingly, all necessary         #
-#   OBJ, H, -I directives, external libraries + -L< libdirs > are added to   #
-#   the corresponding SRSk* macros.                                          #
+#   SMS++ one) required by ScenarioReductionSolver. Accordingly, all         #
+#   necessary OBJ, H, -I directives, external libraries + -L< libdirs > are  #
+#   added to the corresponding SRSk* macros.                                 #
 #                                                                            #
 #   Input:  $(CC)        = compiler command                                  #
 #           $(SW)        = compiler options                                  #
-#           $(SRSkSDR)  = the directory where ScenarioReductionSolver source is       #
-#        $(SRSkODR)  = the directory where the objects have to be put        #
+#           $(SRSkSDR)   = the directory where the source is                 #
 #                                                                            #
-#   Output: $(SRSkOBJ)  = the final object(s) / library                      #
-#              $(SRSkLIB)  = external libraries + -L< libdirs >              #
-#     $(SRSkH)    = the .h files to include for ScenarioReductionSolver      #
-#         $(SRSkINC)  = the -I$( ScenarioReductionSolver directory )         #
+#   Output: $(SRSkOBJ)   = the final object(s) / library                     #
+#           $(SRSkLIB)   = external libraries + -L< libdirs >                #
+#           $(SRSkH)     = the .h files to include                           #
+#           $(SRSkINC)   = the -I$( source directory )                       #
 #                                                                            #
 #                             Antonio Frangioni                              #
-#                         Dipartimento di Informatica                        #
-#                             Universita' di Pisa                            #
+#                        Dipartimento di Informatica                         #
+#                            Universita' di Pisa                             #
 #                                                                            #
 ##############################################################################
 
@@ -33,9 +32,10 @@
 # *H   is the list of all include files
 # *INC is the -I< include directories >
 
-# define input macros for SMS++ complete makefile, then include it
-SMS++SDR = $(SRSkSDR)/../SMS++
-include $(SMS++SDR)/lib/makefile-c
+# define input macros for the TwoStageStochasticBlock complete makefile
+# (comprised StochasticBlock and core SMS++), then include it
+TSSBkSDR = $(SRSkSDR)/../TwoStageStochasticBlock
+include $(TSSBkSDR)/makefile-c
 
 # include the makefile requiring all external modules in input
 include $(SRSkSDR)/makefile
@@ -44,10 +44,11 @@ include $(SRSkSDR)/makefile
 
 # append external -I directives to SRSkINC, SRSkOBJ and SRSkH as defined
 # by the makefile, thus the := assignment has to be used (use GNU make)
-SRSkOBJ := $(SRSkOBJ) $(SMS++OBJ)
-SRSkINC := $(SRSkINC) $(SMS++INC)
+SRSkOBJ := $(SRSkOBJ) $(TSSBkOBJ)
+SRSkH := $(SRSkH) $(TSSBkH)
+SRSkINC := $(TSSBkINC) $(SRSkINC)
 
 # external libraries for ScenarioReductionSolver
-SRSkLIB = $(SMS++LIB)
+SRSkLIB = $(TSSBkLIB)
 
-############################ End of makefile #################################
+########################### End of makefile-c ################################

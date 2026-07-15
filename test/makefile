@@ -54,8 +54,8 @@ MOBJ =  $(SRSkOBJ) $(SMS++OBJ)
 # libraries
 MLIB =  $(SRSkLIB) $(SMS++LIB)
 
-$(DIR)/$(NAME): $(MOBJ) $(DIR)/test.o
-	$(CC) -o $(DIR)/$(NAME) $(DIR)/test.o $(MOBJ) $(MLIB) $(SW)
+$(DIR)/$(NAME): $(MOBJ) $(DIR)/ScenarioReductionSolve.o
+	$(CC) -o $(DIR)/$(NAME) $(DIR)/ScenarioReductionSolve.o $(MOBJ) $(MLIB) $(SW)
 
 # dependencies: every .o from its .cpp + every recursively included .h- - - -
 
@@ -66,8 +66,8 @@ MINC =  $(SMS++INC) $(SRSkINC)
 MH =    $(SMS++H) $(SRSkH)
 
 # compile command
-$(DIR)/test.o: $(DIR)/test.cpp $(MH)
-	$(CC) -c $(DIR)/test.cpp -o $@ $(MINC) $(SW)
+$(DIR)/ScenarioReductionSolve.o: $(DIR)/ScenarioReductionSolve.cpp $(MH)
+	$(CC) -c $(DIR)/ScenarioReductionSolve.cpp -o $@ $(MINC) $(SW)
 
 # clean target
 clean::

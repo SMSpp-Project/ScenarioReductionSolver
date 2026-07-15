@@ -29,9 +29,14 @@ else ()
     endif ()
 endif ()
 
-# ----- ScenarioReductionSolver_test -------------------------------------------------- #
+# ----- ScenarioReductionSolver_test -------------------------------------- #
 
-add_executable(${modName}_test test.cpp)
+# Generic scenario-reduction solve program: reads a pre-built
+# TwoStageStochasticBlock file, runs a reduction method and solves the
+# reduced problem. It needs a TSSB .nc4 instance as input (produced by a
+# problem-specific "generate" program), so it is built here but not run as a
+# CTest: there is no self-contained instance to feed it.
+add_executable(${modName}_test ScenarioReductionSolve.cpp)
 target_link_libraries(${modName}_test PRIVATE ${modNamespace}::${modName})
 
 if (WIN32 AND BUILD_SHARED_LIBS AND NOT DEFINED ENV{CONDA_BUILD})
@@ -45,14 +50,5 @@ if (WIN32 AND BUILD_SHARED_LIBS AND NOT DEFINED ENV{CONDA_BUILD})
             COMMAND_EXPAND_LISTS
             COMMENT "Copying runtime DLLs next to ${modName}_test.exe")
 endif ()
-
-add_test(NAME ${modName}_test
-         COMMAND ${modName}_test
-         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-
-# The label lets the module CI select exactly the tests exercising this
-# module with `ctest -L <module>` (see tests/cmake/TestLabels.cmake in the
-# umbrella for the system-tests counterpart).
-set_tests_properties(${modName}_test PROPERTIES LABELS "${modName}")
 
 # --------------------------------------------------------------------------- #

@@ -1,10 +1,21 @@
 # ScenarioReductionSolver
 
-<!-- TODO: describe here, in a few paragraphs, what the module provides: the
-     :Block (and/or :Solver) classes it defines and the mathematical
-     structure they encode. -->
+`ScenarioReductionSolver` is a SMS++ module providing :Solver classes for the
+discrete scenario reduction problem: given a large set of weighted scenarios
+of a stochastic optimization problem, select a smaller representative subset
+that stays as close as possible, in the (weighted) Wasserstein sense, to the
+full distribution.
 
-`ScenarioReductionSolver` is a SMS++ :Block for ...
+The Solvers read the scenario vectors directly from the `DiscreteScenarioSet`
+carried by a `ScenarioReductionBlock`, so they are independent of the concrete
+problem the scenarios describe and apply unchanged to any stochastic model.
+
+- `ScenarioReductionSolver` implements four heuristics selected at run time:
+  Baseline selection by weight, Dupacova forward selection, and the BestFit
+  and FirstFit local searches.
+- `CSSCScenarioReductionSolver` implements Consistent Scenario Subset
+  Clustering, a cost aware clustering that solves auxiliary optimization
+  problems to drive the selection.
 
 
 ## Getting started
