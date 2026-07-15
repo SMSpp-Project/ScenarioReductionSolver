@@ -13,9 +13,7 @@ problem the scenarios describe and apply unchanged to any stochastic model.
 - `ScenarioReductionSolver` implements four heuristics selected at run time:
   Baseline selection by weight, Dupacova forward selection, and the BestFit
   and FirstFit local searches.
-- `CSSCScenarioReductionSolver` implements Consistent Scenario Subset
-  Clustering, a cost aware clustering that solves auxiliary optimization
-  problems to drive the selection.
+- `CSSCScenarioReductionSolver` implements Cost-Space Scenario Clustering (CSSC). It groups scenarios based on their impact on the objective value in the cost space, such that scenarios with similar cost-space distances are clustered together.
 
 
 ## Getting started
