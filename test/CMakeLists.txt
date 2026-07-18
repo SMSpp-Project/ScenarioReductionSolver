@@ -29,26 +29,26 @@ else ()
     endif ()
 endif ()
 
-# ----- scenario_reduction_solve -------------------------------------------- #
+# ----- ScenarioReductionSolver_test -------------------------------------- #
 
 # Generic scenario-reduction solve program: reads a pre-built
 # TwoStageStochasticBlock file, runs a reduction method and solves the
 # reduced problem. It needs a TSSB .nc4 instance as input (produced by a
 # problem-specific "generate" program), so it is built here but not run as a
 # CTest: there is no self-contained instance to feed it.
-add_executable(scenario_reduction_solve ScenarioReductionSolve.cpp)
-target_link_libraries(scenario_reduction_solve PRIVATE ${modNamespace}::${modName})
+add_executable(${modName}_test ScenarioReductionSolve.cpp)
+target_link_libraries(${modName}_test PRIVATE ${modNamespace}::${modName})
 
 if (WIN32 AND BUILD_SHARED_LIBS AND NOT DEFINED ENV{CONDA_BUILD})
     # On Windows with shared libraries enabled copies all runtime DLL
     # dependencies next to the executable in the build directory
     # (POST_BUILD), using CMake's TARGET_RUNTIME_DLLS generator expression
-    add_custom_command(TARGET scenario_reduction_solve POST_BUILD
+    add_custom_command(TARGET ${modName}_test POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            $<TARGET_RUNTIME_DLLS:scenario_reduction_solve>
-            $<TARGET_FILE_DIR:scenario_reduction_solve>
+            $<TARGET_RUNTIME_DLLS:${modName}_test>
+            $<TARGET_FILE_DIR:${modName}_test>
             COMMAND_EXPAND_LISTS
-            COMMENT "Copying runtime DLLs next to scenario_reduction_solve.exe")
+            COMMENT "Copying runtime DLLs next to ${modName}_test.exe")
 endif ()
 
 # --------------------------------------------------------------------------- #
