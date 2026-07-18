@@ -20,7 +20,7 @@
  * program only ever reads one.
  *
  * Usage:
- *   scenario_reduction_solve -i <tssb.nc4> -m <method> -r <K> -c <solver.txt>
+ *   ScenarioReductionSolver_test -i <tssb.nc4> -m <method> -r <K> -c <solver.txt>
  *
  * \author Minh Duc Pham \n
  *         Dipartimento di Informatica \n
@@ -394,7 +394,7 @@ int main( int argc , char * argv[] )
    for( size_t d = 0 ; d < v.size() ; ++d ) v[ d ] = dss->get_scenario_value( idx , d );
    sel_scen.push_back( std::move( v ) );
   }
-  const std::string red_file = "/tmp/scenario_reduction_solve_reduced.nc4";
+  const std::string red_file = "/tmp/ScenarioReductionSolver_test_reduced.nc4";
   write_reduced_tssb( instance_file , sel_scen , red.weights , red_file );
   const double reduced_obj = solve_tssb_file( red_file , bsc.get() );
   std::remove( red_file.c_str() );
