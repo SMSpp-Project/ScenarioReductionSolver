@@ -36,7 +36,7 @@ endif ()
 # reduced problem. It needs a TSSB .nc4 instance as input (produced by a
 # problem-specific "generate" program), so it is built here but not run as a
 # CTest: there is no self-contained instance to feed it.
-add_executable(${modName}_test ScenarioReductionSolve.cpp)
+add_executable(${modName}_test ScenarioReductionTest.cpp)
 target_link_libraries(${modName}_test PRIVATE ${modNamespace}::${modName})
 
 if (WIN32 AND BUILD_SHARED_LIBS AND NOT DEFINED ENV{CONDA_BUILD})
