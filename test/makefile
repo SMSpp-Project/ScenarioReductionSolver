@@ -11,7 +11,7 @@
 ##############################################################################
 
 # module name
-NAME = ScenarioReductionSolver_test
+NAME = scenario_reduction_solve
 
 # basic directory
 DIR = .
