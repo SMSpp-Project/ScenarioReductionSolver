@@ -10,9 +10,6 @@
 #                             Universita' di Pisa                             #
 # --------------------------------------------------------------------------- #
 
-# Since we are using the block factory, objects from linked libraries
-# may wrongly appear unused, and by default the linker does not include them,
-# so we have to force the linking.
 if (BUILD_SHARED_LIBS)
     if (UNIX AND (NOT APPLE))
         add_link_options("-Wl,--no-as-needed")
@@ -20,7 +17,7 @@ if (BUILD_SHARED_LIBS)
 else ()
     if (MSVC)
         add_link_options("/WHOLEARCHIVE" "/FORCE:MULTIPLE")
-    else () # Unix
+    else ()
         if (APPLE)
             add_link_options("-Wl,-all_load")
         else ()
@@ -29,26 +26,27 @@ else ()
     endif ()
 endif ()
 
-# ----- ScenarioReductionSolver_test -------------------------------------- #
-
-# Generic scenario-reduction solve program: reads a pre-built
-# TwoStageStochasticBlock file, runs a reduction method and solves the
-# reduced problem. It needs a TSSB .nc4 instance as input (produced by a
-# problem-specific "generate" program), so it is built here but not run as a
-# CTest: there is no self-contained instance to feed it.
 add_executable(${modName}_test test.cpp)
-target_link_libraries(${modName}_test PRIVATE ${modNamespace}::${modName})
-
-if (WIN32 AND BUILD_SHARED_LIBS AND NOT DEFINED ENV{CONDA_BUILD})
-    # On Windows with shared libraries enabled copies all runtime DLL
-    # dependencies next to the executable in the build directory
-    # (POST_BUILD), using CMake's TARGET_RUNTIME_DLLS generator expression
-    add_custom_command(TARGET ${modName}_test POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            $<TARGET_RUNTIME_DLLS:${modName}_test>
-            $<TARGET_FILE_DIR:${modName}_test>
-            COMMAND_EXPAND_LISTS
-            COMMENT "Copying runtime DLLs next to ${modName}_test.exe")
-endif ()
 
 # --------------------------------------------------------------------------- #
+#    To test with a specific problem Block (e.g., CFL, UC,...),               #
+#    add the corresponding SMS++::Block library below in                      #
+#    target_link_libraries().                                                 #
+#                                                                             #
+#    The Block factory requires the corresponding library to be linked so that#
+#    Block::deserialize() can instantiate the correct Block type.             #
+#                                                                             #
+#    Example:                                                                 #
+#    To add support for a new Block FooBlock, include                         #
+#                                                                             #
+#     ${modNamespace}::FooBlock                                               #
+#                                                                             #
+#    in the target_link_libraries() list below.                               #
+# --------------------------------------------------------------------------- #
+
+target_link_libraries(${modName}_test PRIVATE
+    ${modNamespace}::${modName}
+    ${modNamespace}::CapacitatedFacilityLocationBlock
+    ${modNamespace}::UCBlock
+    ${modNamespace}::MILPSolver
+)
