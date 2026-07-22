@@ -42,32 +42,41 @@ debug: $(DIR)/$(NAME)
 SMS++SDR = ../../SMS++
 include $(SMS++SDR)/lib/makefile-inc
 
-# ScenarioReductionSolver
+# ScenarioReductionSolver (brings TwoStageStochasticBlock, StochasticBlock and
+# CapacitatedFacilityLocationBlock in input)
 SRSkSDR = ..
 include $(SRSkSDR)/makefile-s
+
+# UCBlock (to deserialize UC scenario-reduction instances)
+UCBckDIR = ../../UCBlock
+include $(UCBckDIR)/lib/makefile
+
+# MILPSolver (to solve the reduced problem)
+MILPSSDR = ../../MILPSolver
+include $(MILPSSDR)/makefile-s
 
 # main module (linking phase) - - - - - - - - - - - - - - - - - - - - - - - -
 
 # object files
-MOBJ =  $(SRSkOBJ) $(SMS++OBJ)
+MOBJ =  $(SRSkOBJ) $(UCBckOBJ) $(MILPSOBJ) $(SMS++OBJ)
 
 # libraries
-MLIB =  $(SRSkLIB) $(SMS++LIB)
+MLIB =  $(SRSkLIB) $(UCBckLIB) $(MILPSLIB) $(SMS++LIB)
 
-$(DIR)/$(NAME): $(MOBJ) $(DIR)/ScenarioReductionSolve.o
-	$(CC) -o $(DIR)/$(NAME) $(DIR)/ScenarioReductionSolve.o $(MOBJ) $(MLIB) $(SW)
+$(DIR)/$(NAME): $(MOBJ) $(DIR)/test.o
+	$(CC) -o $(DIR)/$(NAME) $(DIR)/test.o $(MOBJ) $(MLIB) $(SW)
 
 # dependencies: every .o from its .cpp + every recursively included .h- - - -
 
 # include directives
-MINC =  $(SMS++INC) $(SRSkINC)
+MINC =  $(SMS++INC) $(SRSkINC) $(UCBckINC) $(MILPSINC)
 
 # includes
-MH =    $(SMS++H) $(SRSkH)
+MH =    $(SMS++H) $(SRSkH) $(UCBckH) $(MILPSH)
 
 # compile command
-$(DIR)/ScenarioReductionSolve.o: $(DIR)/ScenarioReductionSolve.cpp $(MH)
-	$(CC) -c $(DIR)/ScenarioReductionSolve.cpp -o $@ $(MINC) $(SW)
+$(DIR)/test.o: $(DIR)/test.cpp $(MH)
+	$(CC) -c $(DIR)/test.cpp -o $@ $(MINC) $(SW)
 
 # clean target
 clean::

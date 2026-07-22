@@ -29,15 +29,28 @@ else ()
     endif ()
 endif ()
 
-# ----- ScenarioReductionSolver_test -------------------------------------- #
+# ----- ScenarioReductionSolver_test ---------------------------------------- #
 
-# Generic scenario-reduction solve program: reads a pre-built
-# TwoStageStochasticBlock file, runs a reduction method and solves the
-# reduced problem. It needs a TSSB .nc4 instance as input (produced by a
-# problem-specific "generate" program), so it is built here but not run as a
-# CTest: there is no self-contained instance to feed it.
-add_executable(${modName}_test ScenarioReductionSolve.cpp)
+# Generic scenario-reduction test: reads a serialized TwoStageStochasticBlock,
+# runs a reduction algorithm and solves the reduced problem. Problem-specific
+# Blocks and a MILP solver are linked when available, so the Block factory can
+# deserialize (CFL, UC, ...) instances and solve the reduced problem.
+add_executable(${modName}_test test.cpp)
+
 target_link_libraries(${modName}_test PRIVATE ${modNamespace}::${modName})
+
+if (TARGET ${modNamespace}::CapacitatedFacilityLocationBlock)
+    target_link_libraries(${modName}_test PRIVATE
+                          ${modNamespace}::CapacitatedFacilityLocationBlock)
+endif ()
+
+if (TARGET ${modNamespace}::UCBlock)
+    target_link_libraries(${modName}_test PRIVATE ${modNamespace}::UCBlock)
+endif ()
+
+if (TARGET ${modNamespace}::MILPSolver)
+    target_link_libraries(${modName}_test PRIVATE ${modNamespace}::MILPSolver)
+endif ()
 
 if (WIN32 AND BUILD_SHARED_LIBS AND NOT DEFINED ENV{CONDA_BUILD})
     # On Windows with shared libraries enabled copies all runtime DLL
