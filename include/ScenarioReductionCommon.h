@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------*/
-/*-------------------- File ScenarioReductionCommon.h ----------------------*/
+/*--------------------- File ScenarioReductionCommon.h ---------------------*/
 /*--------------------------------------------------------------------------*/
 /** @file
  * Common structures, state, and driver functions used by scenario reduction
@@ -27,9 +27,10 @@
  *                                        const std::string & path ) { ... };
  *    hooks.create_srb = [&]( ScenarioReductionState & st , int K ,
  *                            const std::string & method ) { ... };
- *    hooks.build_tssb_for_current_pool = [&]( ScenarioReductionState & st ,
- *                                             const std::string & tmp ) { ... };
- *    hooks.run_cssc = [&]( ScenarioReductionState & st , ScenarioReductionBlock * srb ,
+ *    hooks.build_tssb_for_current_pool =
+ *     [&]( ScenarioReductionState & st , const std::string & tmp ) { ... };
+ *    hooks.run_cssc = [&]( ScenarioReductionState & st ,
+ *                          ScenarioReductionBlock * srb ,
  *                          BlockSolverConfig * bsc , int K ) { ... };
  *    return run_scenario_reduction_test( argc , argv , hooks );
  *   }
@@ -46,7 +47,7 @@
 #define __ScenarioReductionCommon
 
 /*--------------------------------------------------------------------------*/
-/*------------------------------ INCLUDES ----------------------------------*/
+/*-------------------------------- INCLUDES --------------------------------*/
 /*--------------------------------------------------------------------------*/
 
 #include <functional>
@@ -61,25 +62,27 @@
 #include "TwoStageStochasticBlock.h"
 
 /*--------------------------------------------------------------------------*/
-/*------------------------------ NAMESPACE ---------------------------------*/
+/*------------------------------- NAMESPACE --------------------------------*/
 /*--------------------------------------------------------------------------*/
 
 namespace SMSpp_di_unipi_it {
 
 /*--------------------------------------------------------------------------*/
-/*------------------------------ STRUCTURES --------------------------------*/
+/*------------------------------- STRUCTURES -------------------------------*/
 /*--------------------------------------------------------------------------*/
 
 /** @struct SolutionResult
  * @brief Stores the result of solving a problem
  */
 struct SolutionResult {
- double objective = 0.0;  ///< Objective value
- bool solved = false;     ///< Whether the problem was solved successfully
- long long time_ms = 0;   ///< Solution time in milliseconds
- std::vector<double> scenario_objectives;  ///< Individual scenario objectives
-                                           ///< (for anticipative)
-};
+ double objective = 0.0;  ///< objective value
+ bool solved = false;     ///< whether the problem was solved successfully
+ long long time_ms = 0;   ///< solution time in milliseconds
+
+ /** Individual scenario objectives (for anticipative). */
+ std::vector< double > scenario_objectives;
+
+ };  // end( struct SolutionResult )
 
 /*--------------------------------------------------------------------------*/
 
@@ -87,17 +90,20 @@ struct SolutionResult {
  * @brief Stores metrics from scenario reduction
  */
 struct ScenarioReductionMetrics {
- long long reduction_time_ms =
-     0;             ///< Time taken for scenario reduction in milliseconds
- double ell = 2.0;  ///< The ell parameter used for Wasserstein distance
- double wasserstein_distance = 0.0;  ///< The computed Wasserstein-ell distance
- double wasserstein_ell_power =
-     0.0;  ///< The ell-th power of Wasserstein distance
- std::vector<int>
-     selected_indices;  ///< Indices of selected representative scenarios
- std::vector<double>
-     probabilities;  ///< Probabilities of representative scenarios
-};
+ long long reduction_time_ms = 0;    ///< scenario reduction time (ms)
+ double ell = 2.0;                   ///< ell parameter of the Wasserstein
+                                     ///< distance
+ double wasserstein_distance = 0.0;  ///< computed Wasserstein-ell distance
+ double wasserstein_ell_power = 0.0; ///< ell-th power of the Wasserstein
+                                     ///< distance
+
+ /** Indices of the selected representative scenarios. */
+ std::vector< int > selected_indices;
+
+ /** Probabilities of the representative scenarios. */
+ std::vector< double > probabilities;
+
+ };  // end( struct ScenarioReductionMetrics )
 
 /*--------------------------------------------------------------------------*/
 /*------------------------- ScenarioReductionState -------------------------*/
@@ -110,7 +116,9 @@ struct ScenarioReductionMetrics {
 struct ScenarioReductionState {
 
  ScenarioReductionState();
- ~ScenarioReductionState();
+
+ ~ScenarioReductionState() { delete config; }
+
  ScenarioReductionState( const ScenarioReductionState & ) = delete;
  ScenarioReductionState & operator=( const ScenarioReductionState & ) = delete;
 
@@ -129,7 +137,7 @@ struct ScenarioReductionState {
 
  size_t dimension_scenario = 0;
 
-};  // struct ScenarioReductionState
+ };  // end( struct ScenarioReductionState )
 
 /*--------------------------------------------------------------------------*/
 /*------------------------------ ProblemHooks ------------------------------*/
@@ -169,7 +177,8 @@ struct ProblemHooks {
   *  typically needs state.base_block. Leave unset if the "cssc" method is
   *  not supported: requesting it will then throw with an informative
   *  message. */
- std::function< void( ScenarioReductionState & state , ScenarioReductionBlock * srb ,
+ std::function< void( ScenarioReductionState & state ,
+                      ScenarioReductionBlock * srb ,
                       BlockSolverConfig * bsc , int K ) > run_cssc;
 
  /** Directory holding pre-generated scenario files, relative to the test
@@ -177,7 +186,7 @@ struct ProblemHooks {
   *  "../scenarios/<problem_type>/". */
  std::function< std::string() > get_scenarios_directory;
 
-};  // struct ProblemHooks
+ };  // end( struct ProblemHooks )
 
 /*--------------------------------------------------------------------------*/
 /*------------------------- Config-reading helpers -------------------------*/
@@ -204,12 +213,16 @@ std::string get_str_config( ComputeConfig * config , const std::string & name );
  * @param hooks  must at least have load_problem_instance, create_srb, and
  *               build_tssb_for_current_pool set; problem_type non-empty. */
 
-int run_scenario_reduction_test( int argc , char * argv[] , ProblemHooks hooks );
+int run_scenario_reduction_test( int argc , char * argv[] ,
+                                 ProblemHooks hooks );
 
 /*--------------------------------------------------------------------------*/
-}  // namespace SMSpp_di_unipi_it
 
-#endif /* __ScenarioReductionCommon */
+}  // end( namespace SMSpp_di_unipi_it )
+
+/*--------------------------------------------------------------------------*/
+
+#endif  /* ScenarioReductionCommon.h included */
 
 /*--------------------------------------------------------------------------*/
 /*------------------- End File ScenarioReductionCommon.h -------------------*/

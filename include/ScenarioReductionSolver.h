@@ -10,8 +10,9 @@
  * Unlike the library's CFLScenarioReductionSolver, which reads N, K, weights
  * and the distance matrix from a CapacitatedFacilityLocationBlock (so callers
  * must build a *synthetic* CFLB just to carry the scenario distances), this
- * solver reads the scenario vectors DIRECTLY from the DiscreteScenarioSet held
- * by the ScenarioReductionBlock, exactly like GenericCSSCScenarioReductionSolver.
+ * solver reads the scenario vectors DIRECTLY from the DiscreteScenarioSet
+ * held by the ScenarioReductionBlock, exactly like
+ * CSSCScenarioReductionSolver.
  * It therefore works unchanged for CFL, UC, or any other problem; no
  * problem-specific Block is needed.
  *
@@ -92,9 +93,9 @@ public:
   * ScenarioReductionBlock. */
  void get_var_solution( Configuration * solc = nullptr ) override;
 
- bool has_var_solution() override { return ! ind_red.empty(); }
+ bool has_var_solution() override { return( ! ind_red.empty() ); }
 
- OFValue get_var_value() override { return f_solution_value; }
+ OFValue get_var_value() override { return( f_solution_value ); }
 
 /*--------------------------------------------------------------------------*/
 
@@ -130,12 +131,12 @@ private:
  /** Relative pool index [0..N-1] -> absolute DSS scenario index. */
  std::vector< Index > f_pool_map;
 
- std::vector< Index > ind_red;            ///< selected representatives (relative)
+ std::vector< Index > ind_red;            ///< representatives (relative)
  std::vector< Index > indices_to_choose;  ///< non-representative indices
  std::vector< bool >  reduced_atoms;      ///< mask of representatives
  double f_solution_value = 0.0;           ///< Wasserstein distance achieved
 
- /*------ ported algorithms (operate only on f_dist / f_weights) ----------*/
+ /*-------- ported algorithms (operate only on f_dist / f_weights) ---------*/
  int    compute_dupacova();
  int    compute_baseline();
  int    compute_local_search();

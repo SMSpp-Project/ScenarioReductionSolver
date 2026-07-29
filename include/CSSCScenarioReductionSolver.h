@@ -3,10 +3,10 @@
 /*--------------------------------------------------------------------------*/
 /** @file
  * Fully generic implementation of the Cost-Space Scenario Clustering (CSSC)
- * algorithm given a pool of N scenarios of a two-stage stochastic programming,
- * select K representativescenarios (and an assignment of every scenario to the
- * so that solving the reduced K-scenario problem is a good proxy for
- * representative that best approximates it) solving the full N-scenario one.
+ * algorithm: given a pool of N scenarios of a two-stage stochastic program,
+ * select K representative scenarios (and an assignment of every scenario to
+ * the representative that best approximates it) so that solving the reduced
+ * K-scenario problem is a good proxy for solving the full N-scenario one.
  *
  * This class works with any TwoStageStochasticBlock whose inner Block can be
  * solved by a registered MILPSolver. It reads which ColVariable(s) are
@@ -30,7 +30,7 @@
  * ### How to use
  *
  * @code
- *   auto cssc = std::make_unique<CSSCScenarioReductionSolver>();
+ *   auto cssc = std::make_unique< CSSCScenarioReductionSolver >();
  *   cssc->set_milp_config( bsc );            // solver config
  *   cssc->set_nb_reduced( K );               // number of representatives
  *   cssc->set_Block( srb );                  // ScenarioReductionBlock
@@ -108,8 +108,9 @@ public:
 
 /*--------------------------------------------------------------------------*/
 
- CSSCScenarioReductionSolver()  = default;
- ~CSSCScenarioReductionSolver() override;
+ CSSCScenarioReductionSolver() = default;
+
+ ~CSSCScenarioReductionSolver() override { delete f_milp_config; }
 
 /*--------------------------------------------------------------------------*/
 
@@ -127,10 +128,10 @@ public:
   * ScenarioReductionBlock. */
  void get_var_solution( Configuration * solc = nullptr ) override;
 
- bool has_var_solution() override { return ! ind_red.empty(); }
+ bool has_var_solution() override { return( ! ind_red.empty() ); }
 
  /** Returns the Wasserstein distance of the selected scenario set. */
- OFValue get_var_value() override { return f_solution_value; }
+ OFValue get_var_value() override { return( f_solution_value ); }
 
 /*--------------------------------------------------------------------------*/
 
@@ -159,9 +160,9 @@ public:
  /** Required in direct-notification mode (set_fix_with_modification(true),
   * the default); unused in reload mode. Registers the callable responsible
   * for telling the inner Block's attached Solver that scenario data just
-  * changed, using whatever targeted Modification the Block type exposes for
-  * the purpose. Called right after every StochasticBlock::set_data(), with the inner
-  * Block and the just-injected scenario data vector. */
+  * changed, using whatever targeted Modification the Block type exposes
+  * for the purpose. Called right after every StochasticBlock::set_data(),
+  * with the inner Block and the just-injected scenario data vector. */
  using DataInjector = std::function< void( Block * ,
                                            const std::vector< double > & ) >;
  void set_data_injector( DataInjector injector ) {
@@ -172,7 +173,7 @@ public:
   * compute(); must satisfy 0 < K <= N). */
  void set_nb_reduced( int K ) { f_K = K; }
 
- /** Wall-clock time limit (seconds) for the Step-2 partitioning MILP*/
+ /** Wall-clock time limit (seconds) for the Step-2 partitioning MILP. */
  void set_milp_time_limit( double seconds ) { f_milp_time_limit = seconds; }
 
  void set_fix_with_modification( bool fwm ) { f_fix_with_mod = fwm; }
@@ -185,9 +186,17 @@ private:
  StochasticBlock         * f_stoch_applicator = nullptr;
  BlockSolverConfig       * f_milp_config      = nullptr;
  VarExtractor              f_var_extractor;
- DataInjector              f_data_injector;   ///< direct-notification mode: sends the targeted Modification after set_data()
- bool                      f_fix_with_mod = true;  ///< true = direct-notification mode, false = reload mode (see set_fix_with_modification())
- double                    f_milp_time_limit = 120.0;  ///< Step-2 MILP wall-clock limit (s); <=0 disables
+
+ /** Direct-notification mode: sends the targeted Modification right after
+  * each StochasticBlock::set_data() (see set_data_injector()). */
+ DataInjector f_data_injector;
+
+ /** true = direct-notification mode, false = reload mode (see
+  * set_fix_with_modification()). */
+ bool f_fix_with_mod = true;
+
+ /** Step-2 MILP wall-clock time limit (s); <= 0 disables it. */
+ double f_milp_time_limit = 120.0;
 
  int f_N = 0;  ///< total scenarios in pool
  int f_K = 0;  ///< target number of representatives
@@ -203,8 +212,8 @@ private:
 
  /** Solution state (set by solve_cssc_milp, read by get_var_solution). */
  std::vector< bool >  reduced_atoms;
- std::vector< Index > ind_red;           ///< relative indices of representatives
- std::vector< Index > f_representatives; ///< same as ind_red (for get_var_solution)
+ std::vector< Index > ind_red;            ///< representatives (relative)
+ std::vector< Index > f_representatives;  ///< = ind_red (get_var_solution)
  std::vector< Index > f_assignments;     ///< assignment[i] = relative rep index
  std::vector< Index > indices_to_choose; ///< non-representative indices
 
