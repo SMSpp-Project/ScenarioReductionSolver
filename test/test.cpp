@@ -345,11 +345,30 @@ int main( int argc , char * argv[] )
   else if( a == "-m" && i + 1 < argc ) method        = argv[ ++i ];
   else if( a == "-r" && i + 1 < argc ) K             = std::atoi( argv[ ++i ] );
   }
+
+ /* With no instance there is nothing to reduce, and this becomes the smoke
+  * test that the module CI runs: that the two Solver are in the factory,
+  * i.e. that the library is there and its static initialization ran. */
  if( instance_file.empty() ) {
-  std::cerr << "Usage: " << argv[ 0 ]
-            << " -i <tssb.nc4> [-m <method>] [-r <K>] [-c <solver.txt>]\n"
-            << "  method: baseline | dupacova | bestfit | firstfit | cssc\n";
-  return( 1 );
+  if( argc > 1 ) {
+   std::cerr << "Usage: " << argv[ 0 ]
+             << " -i <tssb.nc4> [-m <method>] [-r <K>] [-c <solver.txt>]\n"
+             << "  method: baseline | dupacova | bestfit | firstfit | cssc\n";
+   return( 1 );
+   }
+
+  for( const auto & name : { "ScenarioReductionSolver" ,
+                             "CSSCScenarioReductionSolver" } ) {
+   auto solver = Solver::new_Solver( name );
+   if( ! solver ) {
+    std::cerr << name << " is not in the Solver factory" << std::endl;
+    return( 1 );
+    }
+   std::cout << name << " is in the Solver factory" << std::endl;
+   delete solver;
+   }
+
+  return( 0 );
   }
 
  try {

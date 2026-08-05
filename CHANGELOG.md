@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- the test is registered with CTest, carrying the label the module CI selects
+  it by, and with no instance to reduce it is the smoke test that the two
+  Solver are in the factory
+
 ## [0.1.0] - 2026-07-15
 
 ### Added

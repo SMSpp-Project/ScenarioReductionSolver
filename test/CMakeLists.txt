@@ -64,4 +64,13 @@ if (WIN32 AND BUILD_SHARED_LIBS AND NOT DEFINED ENV{CONDA_BUILD})
             COMMENT "Copying runtime DLLs next to ${modName}_test.exe")
 endif ()
 
+add_test(NAME ${modName}_test
+         COMMAND ${modName}_test
+         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+
+# The label lets the module CI select exactly the tests exercising this
+# module with `ctest -L <module>` (see tests/cmake/TestLabels.cmake in the
+# umbrella for the system-tests counterpart).
+set_tests_properties(${modName}_test PROPERTIES LABELS "${modName}")
+
 # --------------------------------------------------------------------------- #
