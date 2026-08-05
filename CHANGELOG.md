@@ -10,8 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - the CI moves the submodules of the umbrella it caches to the commits the
-  umbrella pins, which `git pull` does not do, so it no longer builds the
-  sources of whenever the cache was filled
+  umbrella pins, which `git pull` alone does not do, so it no longer builds
+  the sources of whenever the cache was filled, as in every other module
 
 - the test is registered with CTest, carrying the label the module CI selects
   it by, and with no instance to reduce it is the smoke test that the two
