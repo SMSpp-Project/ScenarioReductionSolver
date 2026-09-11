@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+### Fixed
+
+## [0.2.0] - 2026-09-12
+
+### Changed
+
+- the version of the module is the git tag of its repository, or the
+  VERSION.txt of a release tarball, and the shared library carries it: its
+  SONAME is major.minor while the major is 0, and it is installed with an
+  RPATH relative to itself, so that an installed tree keeps working wherever
+  it is moved
+
 ### Fixed
 
 - the CI moves the submodules of the umbrella it caches to the commits the
@@ -26,3 +42,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   BestFit, FirstFit)
 - `CSSCScenarioReductionSolver`, scenario reduction via Consistent Scenario
   Subset Clustering
+
+[Unreleased]: https://gitlab.com/smspp/scenarioreductionsolver/-/compare/0.2.0...develop
+[0.2.0]: https://gitlab.com/smspp/scenarioreductionsolver/-/compare/0.1.0...0.2.0
