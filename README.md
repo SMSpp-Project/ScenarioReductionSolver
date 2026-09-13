@@ -21,6 +21,14 @@ problem the scenarios describe and apply unchanged to any stochastic model.
 These instructions will let you build the `ScenarioReductionSolver` module on
 your system.
 
+The module also comes ready-made: `sudo apt install libsmspp-srs-dev` from the
+[PPA of the project](https://launchpad.net/~smspp/+archive/ubuntu/ppa), and
+`vcpkg install "smspp[core,srs]"` from the [SMS++ vcpkg
+registry](https://gitlab.com/smspp/vcpkg-registry); `conda install -c
+conda-forge smspp-project` and `brew install smspp`, from the [tap of the
+project](https://github.com/SMSpp-Project/homebrew-smspp), carry the whole
+framework. What follows is about building it yourself.
+
 ### Requirements
 
 - The [SMS++ core library](https://gitlab.com/smspp/smspp) and its
