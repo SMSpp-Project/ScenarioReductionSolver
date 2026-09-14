@@ -43,6 +43,8 @@ the whole framework. What follows is about building it yourself.
 - The [SMS++ core library](https://gitlab.com/smspp/smspp) and its
   requirements.
 
+- [SMS++ TwoStageStochasticBlock](https://gitlab.com/smspp/twostagestochasticblock)
+
 ### Build and install with CMake
 
 Configure and build the library with:
