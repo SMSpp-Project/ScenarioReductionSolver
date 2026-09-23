@@ -45,3 +45,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]: https://gitlab.com/smspp/scenarioreductionsolver/-/compare/0.2.0...develop
 [0.2.0]: https://gitlab.com/smspp/scenarioreductionsolver/-/compare/0.1.0...0.2.0
+[0.1.0]: https://gitlab.com/smspp/scenarioreductionsolver/-/tags/0.1.0
