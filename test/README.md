@@ -1,25 +1,36 @@
 # test
 
-A tester for `ScenarioReductionSolver` and `CSSCScenarioReductionSolver`.
+The testers of the `ScenarioReductionSolver` module, which need nothing but
+the module and its dependencies (`TwoStageStochasticBlock`, hence
+`StochasticBlock`, and the core SMS++ library).
 
-It reads a `TwoStageStochasticBlock` out of a netCDF file, with its scenario
-set and the `AbstractPath` that say which the here-and-now `Variable` are,
-reduces the scenarios to the `K` representatives one method picks, solves the
-reduced problem and reports the in-sample gap against the value the whole set
-gives.
+- `ScenarioReductionSolver_test` is the smoke test: that
+  `ScenarioReductionSolver` and `CSSCScenarioReductionSolver` are in the
+  Solver factory, i.e., that the library is there and its static
+  initialization ran.
 
-Nothing here knows of any concrete Block: what the first-stage `Variable` are
-and how the data of a scenario maps onto the model is read from the file
-itself, through the `AbstractPath` mechanism, hence the same tester runs on
-whichever Block wrote that file. Writing one is necessarily the business of
-that Block, and is done by the generator of its own test suite.
+- `ScenarioReductionSolver_unit_test` runs the four heuristics of
+  `ScenarioReductionSolver` (`baseline`, `dupacova`, `bestfit` and
+  `firstfit`) on small `DiscreteScenarioSet` filled in memory, whose
+  reduction is known by construction: `K = N`, `K = 1`, identical
+  scenarios, non-uniform weights and an invalid `K`. It checks that the `K`
+  representatives are distinct scenarios of the set, that every scenario is
+  assigned to one of them, that the weight of a representative is the mass
+  of the scenarios assigned to it, and the Wasserstein distance where the
+  optimum is known.
 
-    ./ScenarioReductionSolver_test -i <tssb.nc4> -m <method> -r <K>
-                                   -c <BlockSolverConfig>
+The reduction of an actual `TwoStageStochasticBlock`, i.e., of the
+instances of a model and with `CSSCScenarioReductionSolver`, which needs a
+`:MILPSolver`, is tested in the suites of the umbrella: the tester that
+reads such an instance, reduces it and solves the reduced problem is
+`TSSB_scenred_test` of `tests/TwoStageStochasticBlock`, which the
+`batches-scenred` batteries of `tests/UCBlock` and
+`tests/CapacitatedFacilityLocationBlock` run on the instances of their
+Block.
 
-with `-m` one of `baseline`, `dupacova`, `bestfit`, `firstfit` and `cssc`. The
-`makefile` builds the executable including this module and the core SMS++
-library.
+Both are built by the provided `makefile` (or via CMake from the umbrella,
+where each is registered as a separate `ctest` labelled
+`ScenarioReductionSolver`). Run them as `./<name>`, with no argument.
 
 
 ## Authors

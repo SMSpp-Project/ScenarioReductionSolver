@@ -71,8 +71,13 @@ void ScenarioReductionSolver::set_Block( Block * block )
   std::iota( f_pool_map.begin() , f_pool_map.end() , 0 );
   }
 
- // uniform weights 1/N
- f_weights.assign( nb_atoms , nb_atoms ? 1.0 / nb_atoms : 0.0 );
+ // the probabilities of the pool, normalised by the DiscreteScenarioSet,
+ // uniform if the pool is not the one read above
+ const auto pw = dss->get_pool_weights();
+ if( pw.size() == nb_atoms && pool.size() == nb_atoms )
+  f_weights.assign( pw.begin() , pw.end() );
+ else
+  f_weights.assign( nb_atoms , nb_atoms ? 1.0 / nb_atoms : 0.0 );
 
  // pairwise Euclidean distance matrix (Wasserstein ground metric)
  f_dist.assign( nb_atoms , std::vector< double >( nb_atoms , 0.0 ) );

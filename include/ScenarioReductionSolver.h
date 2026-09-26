@@ -83,7 +83,7 @@ public:
 
  /** Attach to a ScenarioReductionBlock.  Reads the scenario vectors from its
   * DiscreteScenarioSet and builds the pairwise (Euclidean) distance matrix and
-  * the uniform weights.  Call set_nb_reduced() before compute(). */
+  * the weights of its pool.  Call set_nb_reduced() before compute(). */
  void set_Block( Block * block ) override;
 
  /** Run the selected heuristic.  Returns kOK on success. */
@@ -126,7 +126,7 @@ private:
 
  /** Pairwise (weighted-able) distance matrix between scenario vectors. */
  std::vector< std::vector< double > > f_dist;
- /** Scenario weights (uniform 1/N). */
+ /** Scenario weights, the normalised ones of the pool of the DSS. */
  std::vector< double > f_weights;
  /** Relative pool index [0..N-1] -> absolute DSS scenario index. */
  std::vector< Index > f_pool_map;

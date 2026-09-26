@@ -41,6 +41,11 @@ get_directory_property(hasParent PARENT_DIRECTORY)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # ----- Settings ------------------------------------------------------------ #
+# This creates an ENABLE_TESTING option (default: ON) and enables the testing
+# using the ctest executable.
+# See: https://cmake.org/cmake/help/latest/manual/ctest.1.html
+include(CTest)
+
 # Sets the default build type (if none was specified).
 # See: https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html
 include(BuildType)
@@ -153,10 +158,6 @@ add_library(${modNamespace}::${modName} ALIAS ${modName})
 
 # ----- Tests --------------------------------------------------------------- #
 if (BUILD_TESTING)
-    # enable testing in this directory's scope: the umbrella calls
-    # enable_testing() only after this subdirectory has been processed, so the
-    # test would otherwise not be registered with CTest
-    enable_testing()
     add_subdirectory(test)
 endif ()
 

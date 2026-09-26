@@ -28,26 +28,9 @@ endif ()
 
 # ----- ScenarioReductionSolver_test ---------------------------------------- #
 
-# Generic scenario-reduction test: reads a serialized TwoStageStochasticBlock,
-# runs a reduction algorithm and solves the reduced problem. Problem-specific
-# Blocks and a MILP solver are linked when available, so the Block factory can
-# deserialize (CFL, UC, ...) instances and solve the reduced problem.
+# Smoke test: the two Solver of the module are in the factory.
 add_executable(${modName}_test test.cpp)
-
 target_link_libraries(${modName}_test PRIVATE ${modNamespace}::${modName})
-
-if (TARGET ${modNamespace}::CapacitatedFacilityLocationBlock)
-    target_link_libraries(${modName}_test PRIVATE
-                          ${modNamespace}::CapacitatedFacilityLocationBlock)
-endif ()
-
-if (TARGET ${modNamespace}::UCBlock)
-    target_link_libraries(${modName}_test PRIVATE ${modNamespace}::UCBlock)
-endif ()
-
-if (TARGET ${modNamespace}::MILPSolver)
-    target_link_libraries(${modName}_test PRIVATE ${modNamespace}::MILPSolver)
-endif ()
 
 if (WIN32 AND BUILD_SHARED_LIBS AND NOT DEFINED ENV{CONDA_BUILD})
     # On Windows with shared libraries enabled copies all runtime DLL
@@ -62,12 +45,36 @@ if (WIN32 AND BUILD_SHARED_LIBS AND NOT DEFINED ENV{CONDA_BUILD})
 endif ()
 
 add_test(NAME ${modName}_test
-         COMMAND ${modName}_test
-         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+         COMMAND ${modName}_test)
 
-# The label lets the module CI select exactly the tests exercising this
-# module with `ctest -L <module>` (see tests/cmake/TestLabels.cmake in the
-# umbrella for the system-tests counterpart).
-set_tests_properties(${modName}_test PROPERTIES LABELS "${modName}")
+# ----- ScenarioReductionSolver_unit_test ----------------------------------- #
+
+# The heuristics on synthetic scenario sets whose reduction is known.
+add_executable(${modName}_unit_test unit_test.cpp)
+target_link_libraries(${modName}_unit_test PRIVATE ${modNamespace}::${modName})
+
+if (WIN32 AND BUILD_SHARED_LIBS AND NOT DEFINED ENV{CONDA_BUILD})
+    # On Windows with shared libraries enabled copies all runtime DLL
+    # dependencies next to the executable in the build directory
+    # (POST_BUILD), using CMake's TARGET_RUNTIME_DLLS generator expression
+    add_custom_command(TARGET ${modName}_unit_test POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            $<TARGET_RUNTIME_DLLS:${modName}_unit_test>
+            $<TARGET_FILE_DIR:${modName}_unit_test>
+            COMMAND_EXPAND_LISTS
+            COMMENT "Copying runtime DLLs next to ${modName}_unit_test.exe")
+endif ()
+
+add_test(NAME ${modName}_unit_test
+         COMMAND ${modName}_unit_test)
+
+# ----- the label of this module's tests ------------------------------------ #
+
+# The label lets the module CI select exactly the tests exercising this module
+# with `ctest -L <module>` (see tests/cmake/TestLabels.cmake in the umbrella
+# for the system-tests counterpart): without it these tests are built and
+# never run.
+set_tests_properties(${modName}_test ${modName}_unit_test
+                     PROPERTIES LABELS "${modName}")
 
 # --------------------------------------------------------------------------- #

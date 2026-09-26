@@ -30,6 +30,7 @@
 
 # --- Test binaries ------------------------------------------
 test/ScenarioReductionSolver_test
+test/ScenarioReductionSolver_unit_test
 
 # --- CMake --------------------------------------------------
 build/

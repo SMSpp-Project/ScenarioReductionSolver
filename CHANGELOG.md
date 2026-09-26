@@ -9,7 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `ScenarioReductionSolver_unit_test`, the four heuristics on small
+  scenario sets whose reduction is known by construction: `K = N`, `K = 1`,
+  identical scenarios, non-uniform weights and an invalid `K`
+
 ### Changed
+
+- `ScenarioReductionSolver_test` is only the smoke test of the factory, and
+  links nothing but the module: the reduction of the instance of a file,
+  which needed the Block of the instance and a `:MILPSolver`, is
+  `TSSB_scenred_test` of the `TwoStageStochasticBlock` suite of the tests
+
+- the module calls `include(CTest)` as the others do, rather than
+  `enable_testing()` right before its tests
 
 - the makefile asks for `-O3 -DNDEBUG` and nothing else, the macro of the
   patch for `boost::any` on macOS having no reason to be there since there is
@@ -22,6 +34,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and on ELF, where naming the symbol is not enough, the library as a whole
 
 ### Fixed
+
+- the heuristics of `ScenarioReductionSolver` weighed every scenario 1/N
+  whatever the probabilities of the `DiscreteScenarioSet`, so that the
+  baseline did not pick the heaviest scenarios and the aggregated weights
+  of the representatives were not the mass of their scenarios: they now
+  read the weights of the pool
 
 - on macOS a program linking the module lost the classes the module
   registers in the factories when the linker dropped the library, as it

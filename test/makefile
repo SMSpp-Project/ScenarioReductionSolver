@@ -2,7 +2,7 @@
 ################################ makefile ####################################
 ##############################################################################
 #                                                                            #
-#   makefile of test (for ScenarioReductionSolver)                           #
+#   makefile of the ScenarioReductionSolver tests                            #
 #                                                                            #
 #                                Donato Meoli                                #
 #                         Dipartimento di Informatica                        #
@@ -10,8 +10,8 @@
 #                                                                            #
 ##############################################################################
 
-# module name
-NAME = ScenarioReductionSolver_test
+# the executables built here
+NAMES = ScenarioReductionSolver_test ScenarioReductionSolver_unit_test
 
 # basic directory
 DIR = .
@@ -20,7 +20,7 @@ DIR = .
 CC = clang++
 
 # common flags
-COMMON_SW = -std=c++17 -ferror-limit=1 -Wno-enum-compare
+COMMON_SW = -std=c++20 -ferror-limit=1 -Wno-enum-compare
 
 # debug switches
 SW_DEBUG = -g3 -glldb -fno-inline $(COMMON_SW)
@@ -30,11 +30,11 @@ SW_RELEASE = -O3 $(COMMON_SW) -DNDEBUG
 
 # default target - build in release mode
 default: SW = $(SW_RELEASE)
-default: $(DIR)/$(NAME)
+default: $(addprefix $(DIR)/,$(NAMES))
 
 # debug target - build in debug mode
 debug: SW = $(SW_DEBUG)
-debug: $(DIR)/$(NAME)
+debug: $(addprefix $(DIR)/,$(NAMES))
 
 # define & include the necessary modules- - - - - - - - - - - - - - - - - - -
 
@@ -42,46 +42,40 @@ debug: $(DIR)/$(NAME)
 SMS++SDR = ../../SMS++
 include $(SMS++SDR)/lib/makefile-inc
 
-# ScenarioReductionSolver (brings TwoStageStochasticBlock, StochasticBlock and
-# CapacitatedFacilityLocationBlock in input)
+# ScenarioReductionSolver (brings TwoStageStochasticBlock and StochasticBlock
+# in input)
 SRSkSDR = ..
 include $(SRSkSDR)/makefile-s
-
-# UCBlock (to deserialize UC scenario-reduction instances)
-UCBckDIR = ../../UCBlock
-include $(UCBckDIR)/lib/makefile
-
-# MILPSolver (to solve the reduced problem)
-MILPSSDR = ../../MILPSolver
-include $(MILPSSDR)/makefile-s
 
 # main module (linking phase) - - - - - - - - - - - - - - - - - - - - - - - -
 
 # object files
-MOBJ =  $(SRSkOBJ) $(UCBckOBJ) $(MILPSOBJ) $(SMS++OBJ)
+MOBJ =  $(SRSkOBJ) $(SMS++OBJ)
 
 # libraries
-MLIB =  $(SRSkLIB) $(UCBckLIB) $(MILPSLIB) $(SMS++LIB)
+MLIB =  $(SRSkLIB) $(SMS++LIB)
 
-$(DIR)/$(NAME): $(MOBJ) $(DIR)/test.o
-	$(CC) -o $(DIR)/$(NAME) $(DIR)/test.o $(MOBJ) $(MLIB) $(SW)
+$(DIR)/ScenarioReductionSolver_test: $(MOBJ) $(DIR)/test.o
+	$(CC) -o $@ $(DIR)/test.o $(MOBJ) $(MLIB) $(SW)
+
+$(DIR)/ScenarioReductionSolver_unit_test: $(MOBJ) $(DIR)/unit_test.o
+	$(CC) -o $@ $(DIR)/unit_test.o $(MOBJ) $(MLIB) $(SW)
 
 # dependencies: every .o from its .cpp + every recursively included .h- - - -
 
 # include directives
-MINC =  $(SMS++INC) $(SRSkINC) $(UCBckINC) $(MILPSINC)
+MINC =  $(SMS++INC) $(SRSkINC)
 
 # includes
-MH =    $(SMS++H) $(SRSkH) $(UCBckH) $(MILPSH)
+MH =    $(SMS++H) $(SRSkH)
 
 # compile command
-$(DIR)/test.o: $(DIR)/test.cpp $(MH)
-	$(CC) -c $(DIR)/test.cpp -o $@ $(MINC) $(SW)
+$(DIR)/%.o: $(DIR)/%.cpp $(MH)
+	$(CC) -c $< -o $@ $(MINC) $(SW)
 
 # clean target
 clean::
-	rm -f $(DIR)/*.o $(DIR)/*~
-	rm -f $(DIR)/$(NAME)
+	rm -f $(DIR)/*.o $(DIR)/*~ $(addprefix $(DIR)/,$(NAMES))
 
 # phony targets
 .PHONY: default debug clean
