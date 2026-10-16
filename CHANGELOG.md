@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- the default extractor of the first-stage `ColVariable` of
+  `CSSCScenarioReductionSolver` gives the elements of a here-and-now
+  `AbstractPath` selecting an explicit, non-contiguous subset of a group,
+  rather than the ones following the first element
+
 ## [0.3.0] - 2026-10-09
 
 ### Added
