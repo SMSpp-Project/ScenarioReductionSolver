@@ -1,5 +1,10 @@
 # ScenarioReductionSolver
 
+[![Pipeline](https://gitlab.com/smspp/scenarioreductionsolver/badges/develop/pipeline.svg)](https://gitlab.com/smspp/scenarioreductionsolver/-/pipelines?ref=develop)
+[![Documentation](https://img.shields.io/badge/docs-Doxygen-blue)](https://smspp.gitlab.io/smspp-project/)
+[![C++ Standard](https://img.shields.io/badge/C%2B%2B-20-blue.svg)](https://en.cppreference.com/w/cpp/20)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+
 `ScenarioReductionSolver` is a SMS++ module providing :Solver classes for the
 discrete scenario reduction problem: given a large set of weighted scenarios
 of a stochastic optimization problem, select a smaller representative subset
