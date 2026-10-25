@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- the makefiles build the C++20 module `smspp.scenarioreductionsolver` when
+  `SMSppMOD` is not empty (e.g., `make SMSppMOD=1`), with clang++ 16 or
+  later [see `lib/makefile-mod` of SMS++]
+
 - the C++20 module `smspp.scenarioreductionsolver`
   (`src/ScenarioReductionSolver.cppm`), which exports every name that the
   headers declare at namespace scope and re-exports
@@ -16,6 +20,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   smspp.scenarioreductionsolver;` in place of the `#include` of the headers;
   it is built with the CMake option `SMSpp_BUILD_MODULE`, as the target
   `SMS++::ScenarioReductionSolver_module`
+
+### Changed
+
+- `SMSpp_BUILD_MODULE` no longer stops the configuration when the C++20
+  module cannot be built, i.e., with a CMake older than 3.28, a generator
+  other than Ninja or Visual Studio, a compiler other than Clang 16 (with
+  `clang-scan-deps`) or MSVC 19.34, or a module it imports that is not
+  there: the option is turned off with a warning that says why, and the
+  build goes on with the headers [see `cmake/CheckModule.cmake` of SMS++]
 
 ### Fixed
 
