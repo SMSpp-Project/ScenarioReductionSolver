@@ -43,7 +43,7 @@ SRSkH   = $(SRSkSDR)/include/ScenarioReductionCommon.h \
 # [see makefile-mod of SMS++]
 
 $(eval $(call SMSppMODrule,SRSk,$(SRSkSDR),ScenarioReductionSolver,\
-	smspp.scenarioreductionsolver,$(TSSBkMOD)))
+	smspp.scenarioreductionsolver,TSSBk))
 
 # clean - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
