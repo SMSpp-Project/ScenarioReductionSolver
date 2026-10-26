@@ -18,7 +18,7 @@
  * binary).
  *
  * A concrete test's main() therefore looks like:
- *
+ * \code
  *   int main( int argc , char * argv[] ) {
  *    MyProblemState my_state;   // whatever data the hooks below capture
  *    ProblemHooks hooks;
@@ -34,6 +34,7 @@
  *                          BlockSolverConfig * bsc , int K ) { ... };
  *    return run_scenario_reduction_test( argc , argv , hooks );
  *   }
+ * \endcode
  *
  * \author Benoît Tran \n
  *         Dipartimento di Informatica \n
