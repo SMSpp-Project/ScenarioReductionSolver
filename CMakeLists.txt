@@ -115,6 +115,11 @@ if (BUILD_SHARED_LIBS)
         # for by -u included, even under -dead_strip_dylibs
         target_link_options(${modName} INTERFACE
                 "LINKER:-u,_SMSpp_force_load_${modName}")
+    elseif (MINGW)
+        # the PE linker imports a DLL for the symbols asked for, -u
+        # included
+        target_link_options(${modName} INTERFACE
+                "LINKER:-u,SMSpp_force_load_${modName}")
     endif ()
 endif ()
 
@@ -150,7 +155,8 @@ target_include_directories(
 # PUBLIC means they will be linked also to the targets that depend on this
 # library, INTERFACE means they will be linked only to the targets that depend
 # on this library.
-target_link_libraries(${modName} PUBLIC ${modNamespace}::SMS++ ${modNamespace}::TwoStageStochasticBlock)
+target_link_libraries(${modName} PUBLIC ${modNamespace}::SMS++
+        ${modNamespace}::TwoStageStochasticBlock)
 
 # This alias is defined so that executables in this same project can use
 # the library with this notation.
