@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-03
+
 ### Added
 
 - the makefiles build the C++20 module `smspp.scenarioreductionsolver` when
@@ -137,7 +139,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CSSCScenarioReductionSolver`, scenario reduction via Consistent Scenario
   Subset Clustering
 
-[Unreleased]: https://gitlab.com/smspp/scenarioreductionsolver/-/compare/0.3.0...develop
+[Unreleased]: https://gitlab.com/smspp/scenarioreductionsolver/-/compare/0.4.0...develop
+[0.4.0]: https://gitlab.com/smspp/scenarioreductionsolver/-/compare/0.3.0...0.4.0
 [0.3.0]: https://gitlab.com/smspp/scenarioreductionsolver/-/compare/0.2.0...0.3.0
 [0.2.0]: https://gitlab.com/smspp/scenarioreductionsolver/-/compare/0.1.0...0.2.0
 [0.1.0]: https://gitlab.com/smspp/scenarioreductionsolver/-/tags/0.1.0
