@@ -644,7 +644,7 @@ void apply_scenario_to_block( ScenarioReductionState & state ,
 
  for( auto & mapping : data_mappings ) {
   mapping->set_caller( state.base_block );
-  mapping->set_data( scenario.begin() , eNoBlck , eNoBlck );
+  mapping->set_data( scenario , eNoBlck , eNoBlck );
   }
  for( auto & mapping : data_mappings )
   mapping->set_caller( original_caller );

@@ -154,9 +154,8 @@ CSSCScenarioReductionSolver::generic_var_extractor( Block * block ) const
 
  for( const auto & path : f_tssb->get_paths_to_static_here_and_now_vars() ) {
   const auto num = path->get_number_elements< ColVariable >( block );
-  auto * first = path->get_element< ColVariable >( block );
   for( Index j = 0 ; j < num ; ++j )
-   vars.push_back( first + j );
+   vars.push_back( path->get_element< ColVariable >( block , j ) );
   }
 
  return( vars );
