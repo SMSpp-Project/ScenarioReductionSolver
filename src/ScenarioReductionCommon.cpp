@@ -460,13 +460,15 @@ void save_solution_cache( ScenarioReductionState & state ,
   cout << "    Saving solution result to cache: " << filename << endl;
  try {
   filesystem::path fp( filename );
-  if( fp.has_parent_path() ) filesystem::create_directories( fp.parent_path() );
+  if( fp.has_parent_path() )
+   filesystem::create_directories( fp.parent_path() );
   netCDF::NcFile file( filename , netCDF::NcFile::replace );
   file.putAtt( "objective" , netCDF::NcDouble() , result.objective );
   file.putAtt( "solved"    , netCDF::NcInt()    , result.solved ? 1 : 0 );
   file.putAtt( "time_ms"   , netCDF::NcInt64()  , result.time_ms );
   if( ! result.scenario_objectives.empty() ) {
-   auto dim = file.addDim( "NumScenarios" , result.scenario_objectives.size() );
+   auto dim = file.addDim( "NumScenarios" ,
+                           result.scenario_objectives.size() );
    file.addVar( "ScenarioObjectives" , netCDF::NcDouble() , dim )
        .putVar( result.scenario_objectives.data() );
    }
@@ -558,7 +560,8 @@ void save_reduction_solution( ScenarioReductionState & state ,
   cout << "[DEBUG] Saving reduction solution to cache: " << filename << endl;
  try {
   filesystem::path fp( filename );
-  if( fp.has_parent_path() ) filesystem::create_directories( fp.parent_path() );
+  if( fp.has_parent_path() )
+   filesystem::create_directories( fp.parent_path() );
   netCDF::NcFile file( filename , netCDF::NcFile::replace );
   file.putAtt( "reduction_time_ms" , netCDF::NcInt64() ,
                metrics.reduction_time_ms );
@@ -594,13 +597,15 @@ ScenarioReductionMetrics load_reduction_solution(
  ScenarioReductionState & state , const string & filename )
 {
  if( get_int_config( state.config , "intLogVerb" ) >= 2 )
-  cout << "[DEBUG] Loading reduction solution from cache: " << filename << endl;
+  cout << "[DEBUG] Loading reduction solution from cache: " << filename
+       << endl;
  if( ! filesystem::exists( filename ) )
   throw( runtime_error(
    "load_reduction_solution: cache file not found: " + filename ) );
  ScenarioReductionMetrics metrics;
  netCDF::NcFile file( filename , netCDF::NcFile::read );
- file.getAtt( "reduction_time_ms"    ).getValues( & metrics.reduction_time_ms );
+ file.getAtt( "reduction_time_ms"    ).getValues(
+					      & metrics.reduction_time_ms );
  file.getAtt( "ell"                  ).getValues( & metrics.ell );
  file.getAtt( "wasserstein_distance" )
      .getValues( & metrics.wasserstein_distance );
@@ -891,7 +896,8 @@ void solve_scenario_reduction( ScenarioReductionState & state ,
 
  if( get_int_config( config , "intLogVerb" ) >= 1 )
   cout << "\nPerforming scenario reduction:\n"
-       << "  Reducing from " << get_int_config( config , "intFullNumScenarios" )
+       << "  Reducing from " <<
+       get_int_config( config , "intFullNumScenarios" )
        << " to " << K << " scenarios using " << method << " method..." << endl;
 
  // ---- Try to load cached reduction solution ---------------------------
@@ -930,7 +936,8 @@ void solve_scenario_reduction( ScenarioReductionState & state ,
  // ---- Attach solver and run ---------------------------------------------
  if( method == "cssc" ) {
   auto * bsc = dynamic_cast< BlockSolverConfig * >(
-   Configuration::deserialize( get_str_config( config , "strSolverConfig" ) ) );
+   Configuration::deserialize( get_str_config( config ,
+                                               "strSolverConfig" ) ) );
   if( ! bsc )
    throw( runtime_error(
     "solve_scenario_reduction: failed to load solver config for CSSC" ) );
@@ -1020,7 +1027,8 @@ void solve_scenario_reduction( ScenarioReductionState & state ,
  // Save to cache
  if( get_int_config( config , "intSaveResults" ) ) {
   try {
-   save_reduction_solution( state , generate_reduction_cache_filename( state ) ,
+   save_reduction_solution( state ,
+                            generate_reduction_cache_filename( state ) ,
                              state.reduction_metrics );
    if( get_int_config( config , "intLogVerb" ) >= 1 )
     cout << "  Saved reduction solution to cache" << endl;
@@ -1237,10 +1245,12 @@ void print_results( ScenarioReductionState & state )
           "compute the gap)" << endl;
 
  if( get_int_config( config , "intComputeVPI" ) &&
-     ( state.anticipative_full.solved || state.anticipative_reduced.solved ) ) {
+     ( state.anticipative_full.solved ||
+       state.anticipative_reduced.solved ) ) {
   cout << "\nValue of Perfect Information" << endl;
   if( state.anticipative_full.solved && state.full_result.solved ) {
-   double vpi = state.full_result.objective - state.anticipative_full.objective;
+   double vpi = state.full_result.objective -
+                state.anticipative_full.objective;
    cout << "  Full scenarios" << endl;
    cout << "    Stochastic......: " << fixed << setprecision( 2 )
         << state.full_result.objective << endl;
@@ -1286,7 +1296,8 @@ void print_results( ScenarioReductionState & state )
 /*---------------------- run_scenario_reduction_test -----------------------*/
 /*--------------------------------------------------------------------------*/
 
-int run_scenario_reduction_test( int argc , char * argv[] , ProblemHooks hooks )
+int run_scenario_reduction_test( int argc , char * argv[] ,
+                                 ProblemHooks hooks )
 {
  try {
   ScenarioReductionState state;

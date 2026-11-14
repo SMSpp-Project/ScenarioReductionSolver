@@ -143,8 +143,9 @@ public:
   }
 
  /** Optional: register a problem-specific variable extractor. The lambda
-  * receives the inner Block (fully initialised via generate_abstract_variables)
-  * and must return ColVariable* pointers to all here-and-now variables.
+  * receives the inner Block (fully initialised via
+  * generate_abstract_variables) and must return ColVariable* pointers to all
+  * here-and-now variables.
   *
   * If never called, the solver falls back to a generic extractor that reads
   * the here-and-now AbstractPaths directly from the TwoStageStochasticBlock
@@ -214,7 +215,8 @@ private:
  std::vector< bool >  reduced_atoms;
  std::vector< Index > ind_red;            ///< representatives (relative)
  std::vector< Index > f_representatives;  ///< = ind_red (get_var_solution)
- std::vector< Index > f_assignments;     ///< assignment[i] = relative rep index
+ std::vector< Index > f_assignments;     ///< assignment[i] = relative rep
+                                         ///< index
  std::vector< Index > indices_to_choose; ///< non-representative indices
 
  double f_solution_value = 0.0;  ///< Wasserstein distance
