@@ -102,8 +102,9 @@ public:
  /** Number of representative scenarios K (0 < K <= N). */
  void set_nb_reduced( int K ) { f_K = K; }
 
- /** Select the algorithm (enum or 0..3 int, matching CFLScenarioReductionSolver
-  * Baseline=0, Dupacova=1, BestFit=2, FirstFit=3). */
+ /** Select the algorithm (enum or 0..3 int, matching
+  * CFLScenarioReductionSolver Baseline=0, Dupacova=1, BestFit=2,
+  * FirstFit=3). */
  void set_algorithm( Algorithm a ) { f_algo = a; }
  void set_algorithm( int a ) { f_algo = static_cast< Algorithm >( a ); }
 

@@ -227,7 +227,8 @@ CSSCScenarioReductionSolver::compute_generic_V_matrix()
   srb->get_scenario_generator() );
  const auto scenario_size = dss->get_scenarioSize();
 
- std::vector< std::vector< double > > V( n , std::vector< double >( n , 0.0 ) );
+ std::vector< std::vector< double > > V( n ,
+                                         std::vector< double >( n , 0.0 ) );
 
  Block * inner = f_stoch_applicator->get_inner_block();
  inner->generate_abstract_variables();
@@ -262,8 +263,8 @@ CSSCScenarioReductionSolver::compute_generic_V_matrix()
    "failed to attach solver to inner block" ) );
   }
 
- // Save original types, build continuous-relaxed types for the off-diagonal LP.
- // For kBinary(11) -> kPosUnitary(10): clear the integer bit.
+ // Save original types, build continuous-relaxed types for the off-diagonal
+ // LP. For kBinary(11) -> kPosUnitary(10): clear the integer bit.
  // This lets the solver treat fixed 0/1 vars as continuous bounds, avoiding
  // unnecessary MIP branching in the off-diagonal solves
  std::vector< ColVariable::var_type > orig_types( fs_vars.size() );
@@ -558,7 +559,8 @@ void CSSCScenarioReductionSolver::solve_cssc_milp(
 
  milp_block->generate_abstract_variables();
 
- auto * milp_cfg = static_cast< BlockSolverConfig * >( f_milp_config->clone() );
+ auto * milp_cfg =
+   static_cast< BlockSolverConfig * >( f_milp_config->clone() );
  milp_cfg->apply( milp_block.get() );
 
  Solver * milp_solver = milp_block->get_registered_solvers().empty()

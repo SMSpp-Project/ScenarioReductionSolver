@@ -193,9 +193,12 @@ struct ProblemHooks {
 /*------------------------- Config-reading helpers -------------------------*/
 /*--------------------------------------------------------------------------*/
 
-int         get_int_config( ComputeConfig * config , const std::string & name );
-double      get_dbl_config( ComputeConfig * config , const std::string & name );
-std::string get_str_config( ComputeConfig * config , const std::string & name );
+int         get_int_config( ComputeConfig * config ,
+                            const std::string & name );
+double      get_dbl_config( ComputeConfig * config ,
+                            const std::string & name );
+std::string get_str_config( ComputeConfig * config ,
+                            const std::string & name );
 
 /*--------------------------------------------------------------------------*/
 /*---------------------- run_scenario_reduction_test -----------------------*/
