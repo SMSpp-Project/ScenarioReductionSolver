@@ -51,4 +51,8 @@ SRSkINC := $(TSSBkINC) $(SRSkINC)
 # external libraries for ScenarioReductionSolver
 SRSkLIB = $(TSSBkLIB)
 
+# the objects as the shared libraries of the module and of those whose
+# objects it takes [see SMS++/lib/makefile-shared]
+$(eval $(call SMSppSOlib,SRSk))
+
 ########################### End of makefile-c ################################
