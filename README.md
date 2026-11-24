@@ -110,6 +110,10 @@ conduct, and the process for submitting merge requests to us.
 
 ### Current Lead Authors
 
+- **Donato Meoli**  
+  Dipartimento di Informatica  
+  Università di Pisa
+
 - **Minh Duc Pham**  
   Dipartimento di Informatica  
   Università di Pisa

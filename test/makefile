@@ -4,7 +4,7 @@
 #                                                                            #
 #   makefile of the ScenarioReductionSolver tests                            #
 #                                                                            #
-#                                Donato Meoli                                #
+#                             Antonio Frangioni                              #
 #                         Dipartimento di Informatica                        #
 #                             Universita' di Pisa                            #
 #                                                                            #
