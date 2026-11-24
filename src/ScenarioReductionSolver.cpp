@@ -10,11 +10,11 @@
  * and weights are built here directly from the DiscreteScenarioSet rather than
  * read from a CapacitatedFacilityLocationBlock.
  *
- * \author Benoît Tran \n
+ * \author Minh Duc Pham \n
  *         Dipartimento di Informatica \n
  *         Universita' di Pisa \n
  *
- * \author Minh Duc Pham \n
+ * \author Benoît Tran \n
  *         Dipartimento di Informatica \n
  *         Universita' di Pisa \n
  *
