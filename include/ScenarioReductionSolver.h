@@ -7,14 +7,11 @@
  * BestFit and FirstFit (local search), selecting K representative scenarios by
  * minimising the (weighted) Wasserstein distance to the full set.
  *
- * Unlike the library's CFLScenarioReductionSolver, which reads N, K, weights
- * and the distance matrix from a CapacitatedFacilityLocationBlock (so callers
- * must build a *synthetic* CFLB just to carry the scenario distances), this
- * solver reads the scenario vectors DIRECTLY from the DiscreteScenarioSet
- * held by the ScenarioReductionBlock, exactly like
- * CSSCScenarioReductionSolver.
- * It therefore works unchanged for CFL, UC, or any other problem; no
- * problem-specific Block is needed.
+ * The solver reads the scenario vectors directly from the
+ * DiscreteScenarioSet held by the ScenarioReductionBlock, as
+ * CSSCScenarioReductionSolver does, and builds from them the weights and
+ * the distance matrix; it therefore works unchanged for CFL, UC, or any
+ * other problem, and no problem-specific Block is needed.
  *
  * ### How to use
  * @code
@@ -25,9 +22,6 @@
  *   srs->compute();
  *   srs->get_var_solution();        // writes ScenarioReductionBlockSolution
  * @endcode
- *
- * The algorithms themselves are ports of the routines in
- * CFLScenarioReductionSolver; only the data-loading layer differs
  *
  * \author Minh Duc Pham \n
  *         Dipartimento di Informatica \n
@@ -102,9 +96,8 @@ public:
  /** Number of representative scenarios K (0 < K <= N). */
  void set_nb_reduced( int K ) { f_K = K; }
 
- /** Select the algorithm (enum or 0..3 int, matching
-  * CFLScenarioReductionSolver Baseline=0, Dupacova=1, BestFit=2,
-  * FirstFit=3). */
+ /** Select the algorithm (enum or its int value 0..3, see Algorithm:
+  * Baseline=0, Dupacova=1, BestFit=2, FirstFit=3). */
  void set_algorithm( Algorithm a ) { f_algo = a; }
  void set_algorithm( int a ) { f_algo = static_cast< Algorithm >( a ); }
 

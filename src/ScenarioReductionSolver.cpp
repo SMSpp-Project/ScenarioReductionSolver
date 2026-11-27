@@ -5,10 +5,9 @@
  * Implementation of ScenarioReductionSolver, generic heuristic
  * scenario reduction (Baseline / Dupacova / BestFit / FirstFit).
  *
- * The algorithms are ports of the problem-agnostic routines in
- * CFLScenarioReductionSolver; the only difference is that the distance matrix
- * and weights are built here directly from the DiscreteScenarioSet rather than
- * read from a CapacitatedFacilityLocationBlock.
+ * The algorithms are problem-agnostic: the distance matrix and the weights
+ * are built here directly from the DiscreteScenarioSet, with no
+ * problem-specific Block.
  *
  * \author Minh Duc Pham \n
  *         Dipartimento di Informatica \n
